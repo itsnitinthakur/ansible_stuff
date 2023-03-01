@@ -1,0 +1,24 @@
+---
+- hosts: "tower"
+  gather_facts: true
+  tasks:
+    - name: "check status of tower node(s)"
+      become: true
+      command: "ansible-tower-service status"
+      ignore_errors: true
+
+    
+    - name: "verify site is reachable "
+      uri:
+        url: "https://{{ansible-default_ipv4.address}}"
+        validate_certs: no 
+    
+    - name: "Count our fruit"
+      ansible.builtin.debug:
+        msg: "{{ item }} with index {{ my_idx }}"
+      loop:
+        - apple
+        - banana
+        - pear
+      loop_control:
+        index_var: my_idx
